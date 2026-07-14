@@ -255,10 +255,18 @@ The modular structure makes it easy to add:
 
 This is a family project. Feel free to use and modify as needed for your family's communication needs.
 
-## Support
-
-For issues or questions, please refer to the code comments or contact the project maintainer.
 
 ---
 
 **Enjoy keeping your family connected!** 🏠💬
+
+
+Some screenshots
+
+<img width="1125" height="649" alt="image" src="https://github.com/user-attachments/assets/98bc0403-0cd4-494e-a863-058070f820e5" />
+<img width="1166" height="663" alt="image" src="https://github.com/user-attachments/assets/494752ec-cc4b-435c-a0e7-73a049d535a1" />
+<img width="1224" height="610" alt="image" src="https://github.com/user-attachments/assets/aba01a6a-dfec-42e6-9443-0d6e9ab423d4" />
+
+
+
+
