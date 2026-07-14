@@ -71,7 +71,7 @@
         <div class="reply-form">
             <h4>Post a Reply</h4>
             <form method="POST" action="{{ url_for('create_reply', post_id=post.id) }}" enctype="multipart/form-data">
-                {{ csrf_token() }}
+                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
                 <textarea name="content" required placeholder="Enter your reply..."></textarea>
                 <div class="form-group">
                     <label for="reply_image">Upload Image (Optional):</label>
