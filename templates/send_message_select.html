@@ -9,7 +9,7 @@
     <div class="create-room" style="margin-top: 2rem;">
         <h3>Select a User to Message</h3>
         <form method="POST" action="{{ url_for('send_message_select_user') }}">
-        {{ csrf_token() }}
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <div class="form-group">
                 <label for="user_id">Choose a user:</label>
                 <select id="user_id" name="user_id" required>
