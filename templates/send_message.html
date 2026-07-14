@@ -1,0 +1,24 @@
+<!-- templates/send_message.html -->
+<!-- templates/send_message.html -->
+{% extends "base.html" %}
+{% block title %}Send Message - Family Chat{% endblock %}
+{% block content %}
+<div class="admin-panel">
+    <h2>Send Message to {{ other_user.username }}</h2>
+    <a href="{{ url_for('messages') }}" class="btn cancel-btn">Back to Messages</a>
+    <a href="{{ url_for('index') }}" class="btn cancel-btn">Back to Main</a>
+    
+    <div class="reply-form" style="margin-top: 2rem;">
+        <h3>Send Message</h3>
+        <form method="POST" action="{{ url_for('send_message', user_id=other_user.id) }}" enctype="multipart/form-data">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <textarea name="content" required placeholder="Enter your message..."></textarea>
+            <div class="form-group">
+                <label for="image">Upload Image (Optional):</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+# templates/message.html
+<!-- templates/message.html -->
+{% extends "base.html" %}
+{% block title %}Message - Family Chat{% endblock %}
+{% block content %}
+<div class="admin-panel">
+    <h2>Message with {{ other_user.username }}</h2>
+    <a href="{{ url_for('messages') }}" class="btn cancel-btn">Back to Messages</a>
+    <a href="{{ url_for('index') }}" class="btn cancel-btn">Back to Main</a>
+    
+    <div class="posts-list" style="margin-top: 2rem;">
+        {% for message in messages %}
+        <div class="post-card" style="background-color: {% if message.sender_id == session.user_id %}#3a3a3a{% else %}#2d2d2d{% endif %};">
+            <div class="post-header">
+                <h3>{{ message.sender.username }}</h3>
+                <span class="post-meta">
+                    {{ message.created_at.strftime('%Y-%m-%d %H:%M') }}
+                </span>
+            </div>
+            <div class="post-content">
+                <p>{{ message.content }}</p>
+                {% if message.image_filename %}
+                <div class="post-image">
+                    <img src="{{ url_for('uploaded_file', filename=message.image_filename) }}" alt="Message Image">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    
+    <div class="reply-form" style="margin-top: 2rem;">
+        <h3>Send Message</h3>
+        <form method="POST" action="{{ url_for('send_message', user_id=other_user.id) }}" enctype="multipart/form-data">
+            <textarea name="content" required placeholder="Enter your message..."></textarea>
+            <div class="form-group">
+                <label for="image">Upload Image (Optional):</label>
+                <input type="file" id="image" name="image" accept="image/*">
+            </div>
+            <button type="submit" class="btn">Send Message</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

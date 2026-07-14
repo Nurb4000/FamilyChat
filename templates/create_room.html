@@ -1,0 +1,32 @@
+<!-- templates/create_room.html -->
+{% extends "base.html" %}
+{% block title %}Create Room - Family Chat{% endblock %}
+{% block content %}
+<div class="create-room">
+    <h2>Create New Room</h2>
+    <a href="{{ url_for('admin') }}" class="btn cancel-btn">Back to Admin</a>
+    <form method="POST" action="{{ url_for('create_room') }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="name">Room Name:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="private">
+                <input type="checkbox" id="private" name="private">
+                Private Room (only authorized users can access)
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="sort_order">Sort Order:</label>
+            <input type="number" id="sort_order" name="sort_order" value="0" min="0">
+        </div>
+        <button type="submit" class="btn">Create Room</button>
+        <a href="{{ url_for('admin') }}" class="btn cancel-btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}

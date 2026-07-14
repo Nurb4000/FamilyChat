@@ -1,0 +1,91 @@
+# **templates/room.html**
+<!-- templates/room.html -->  
+{% extends "base.html" %}  
+{% block title %}{{ room.name }} - Family Chat{% endblock %}  
+{% block content %}  
+<div class="room-header">  
+<h2>{{ room.name }}</h2>  
+<p>{{ room.description }}</p>  
+{% if room.private %}  
+<p style="color: #ff9900;">Private Room</p>  
+{% endif %}  
+{% if new_post_count > 0 %}  
+<p class="new-posts">You have {{ new_post_count }} new post{{ 's' if new_post_count > 1 else '' }}</p>  
+{% endif %}  
+</div>  
+<div class="room-actions">  
+<a href="{{ url_for('create_post', room_id=room.id) }}" class="btn">Create New Post</a>  
+{% if session.is_admin %}  
+<a href="{{ url_for('admin_delete_room_confirm', room_id=room.id) }}" class="btn cancel-btn">Delete Room</a>  
+<a href="{{ url_for('admin_edit_room', room_id=room.id) }}" class="btn">Edit Room</a>  
+{% endif %}  
+{% if session.is_admin %}  
+<a href="{{ url_for('admin_room_permissions', room_id=room.id) }}" class="btn">Manage Permissions</a>  
+{% endif %}  
+<a href="{{ url_for('index') }}" class="btn">← Back to Main</a>  
+</div>  
+<!-- Posts List -->  
+<div class="posts-list" id="posts-list">  
+{% for post in posts %}  
+<div class="post-card" id="post-{{ post.id }}">  
+<div class="post-header">  
+<h3><a href="{{ url_for('post', post_id=post.id) }}">{{ post.title }}</a></h3>  
+<span class="post-meta">  
+by {{ post.user.username }} at {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}  
+</span>  
+</div>  
+<div class="post-content">  
+<p>{{ post.content[:200] }}{% if post.content|length > 200 %}...{% endif %}</p>  
+</div>  
+<div class="post-footer">  
+<a href="{{ url_for('post', post_id=post.id) }}" class="read-more">Read more</a>  
+<span class="reply-count">  
+{{ post.replies|length }} replies  
+{% if post_new_reply_counts[post.id] > 0 %}  
+<span class="new-replies">  
+(+{{ post_new_reply_counts[post.id] }} new  
+{% if post_new_reply_counts[post.id] == 1 %}reply{% else %}replies{% endif %}  
+)  
+</span>  
+{% endif %}  
+</span>  
+{% if session.is_admin %}  
+<div class="admin-actions">  
+<a href="{{ url_for('admin_delete_post_confirm', post_id=post.id) }}" class="btn cancel-btn">Delete Post</a>  
+</div>  
+{% endif %}  
+</div>  
+</div>  
+{% endfor %}  
+</div>  
+<!-- Pagination controls for Posts -->  
+{% if pagination.total_pages > 1 %}  
+<div class="pagination">  
+<div class="pagination-info">Page {{ pagination.page }} of {{ pagination.total_pages }}</div>  
+<div class="pagination-controls">  
+{% if pagination.has_prev %}  
+<a href="{{ pagination.prev_url }}" class="btn">← Previous</a>  
+{% endif %}  
+{% if pagination.has_next %}  
+<a href="{{ pagination.next_url }}" class="btn">Next →</a>  
+{% endif %}  
+</div>  
+</div>  
+{% endif %}  
+{% if new_post_count > 0 and request.args.get('scroll_to') %}  
+<script>  
+// Scroll to the oldest new post after page load  
+document.addEventListener("DOMContentLoaded", function() {  
+const postId = {{ request.args.get('scroll_to') }};  
+const postElement = document.getElementById('post-' + postId);  
+if (postElement) {  
+postElement.scrollIntoView({ behavior: 'smooth', block: 'center' });  
+postElement.style.backgroundColor = '#4a4a2a';  
+setTimeout(() => {  
+postElement.style.backgroundColor = '';  
+}, 1000);  
+}  
+});  
+</script>  
+{% endif %}  
+{% endblock %}  

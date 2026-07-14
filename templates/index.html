@@ -1,0 +1,25 @@
+<!-- templates/index.html -->
+<!-- templates/index.html -->
+{% extends "base.html" %}
+{% block content %}
+<div class="room-list">
+    <h2>Rooms</h2>
+    <div class="rooms-grid">
+    {% for room in rooms %}
+        <div class="room-card">
+            <h3><a href="{{ url_for('room', room_id=room.id) }}">{{ room.name }}</a></h3>
+            <p>{{ room.description }}</p>
+            <div class="room-stats">
+                <span>{{ room.posts|length }} posts</span>
+                {% if room_new_post_counts[room.id] > 0 %}
+                <span class="new-posts">({{ room_new_post_counts[room.id] }} new)</span>
+                {% endif %}
+                {% if room.private %}
+                <span style="color: #ff9900;">(Private)</span>
+                {% endif %}
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+<!-- templates/admin_edit_room.html -->
+{% extends "base.html" %}
+{% block title %}Edit Room - Family Chat{% endblock %}
+{% block content %}
+<div class="create-room">
+    <h2>Edit Room: {{ room.name }}</h2>
+    <a href="{{ url_for('admin') }}" class="btn cancel-btn">Back to Admin</a>
+    <form method="POST" action="{{ url_for('admin_edit_room', room_id=room.id) }}">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+        <div class="form-group">
+            <label for="name">Room Name:</label>
+            <input type="text" id="name" name="name" value="{{ room.name }}" required>
+        </div>
+        <div class="form-group">
+            <label for="description">Description:</label>
+            <textarea id="description" name="description">{{ room.description }}</textarea>
+        </div>
+        <div class="form-group">
+            <label for="private">
+                <input type="checkbox" id="private" name="private" {% if room.private %}checked{% endif %}>
+                Private Room (only authorized users can access)
+            </label>
+        </div>
+        <div class="form-group">
+            <label for="sort_order">Sort Order:</label>
+            <input type="number" id="sort_order" name="sort_order" value="{{ room.sort_order or 0 }}" min="0">
+        </div>
+        <button type="submit" class="btn">Update Room</button>
+        <a href="{{ url_for('index') }}" class="btn cancel-btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}

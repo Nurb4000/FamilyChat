@@ -1,0 +1,40 @@
+<!-- templates/admin_edit_user.html -->
+{% extends "base.html" %}
+{% block title %}Edit User - Family Chat{% endblock %}
+{% block content %}
+<div class="admin-edit-user">
+    <h2>Edit User: {{ user.username }}</h2>
+    <a href="{{ url_for('admin_users') }}" class="btn cancel-btn">Back to Users</a>
+    <div class="edit-user-form">
+        <form method="POST" action="{{ url_for('admin_edit_user', user_id=user.id) }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" value="{{ user.username }}" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" value="{{ user.email or '' }}" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password (leave blank to keep current):</label>
+                <input type="password" id="password" name="password">
+            </div>
+            <div class="form-group">
+                <label for="is_admin">
+                    <input type="checkbox" id="is_admin" name="is_admin" {% if user.is_admin %}checked{% endif %}>
+                    Admin User
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="enabled">
+                    <input type="checkbox" id="enabled" name="enabled" {% if user.enabled %}checked{% endif %}>
+                    Enabled (can login)
+                </label>
+            </div>
+            <button type="submit" class="btn">Update User</button>
+            <a href="{{ url_for('admin_users') }}" class="btn cancel-btn">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

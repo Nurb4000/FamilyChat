@@ -1,0 +1,47 @@
+<!-- templates/base.html -->
+<!-- templates/base.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Family Chat{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <div class="logo-container">
+                <img src="{{ url_for('static', filename='logo.jpg') }}" alt="Family Chat Logo">
+            </div>
+            <h1>Family Chat</h1>
+            {% if session.user_id %}
+            <div class="user-info">
+                <span>Welcome, {{ session.username }}{% if session.is_admin %} (Admin){% endif %}</span>
+                {% if session.is_admin %}
+                <a href="{{ url_for('admin') }}" class="logout-btn">Admin Panel</a>
+                {% endif %}
+                <a href="{{ url_for('messages') }}" class="logout-btn">Messages</a>
+                <a href="{{ url_for('logout') }}" class="logout-btn">Logout</a>
+                <a href="{{ url_for('change_password') }}" class="logout-btn">Change Password</a>
+            </div>
+            {% endif %}
+        </div>
+    </header>
+    <main>
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <div class="flash-messages">
+            {% for message in messages %}
+            <div class="flash-message">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer>
+        <p>&copy; Family Chat. All rights reserved.</p>
+    </footer>
+</body>
+</html>

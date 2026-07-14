@@ -1,0 +1,40 @@
+<!-- templates/admin_add_user.html -->
+{% extends "base.html" %}
+{% block title %}Add User - Family Chat{% endblock %}
+{% block content %}
+<div class="admin-add-user">
+    <h2>Add New User</h2>
+    <a href="{{ url_for('admin_users') }}" class="btn cancel-btn">Back to Users</a>
+    <div class="create-user-form">
+        <form method="POST" action="{{ url_for('admin_add_user') }}">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+            <div class="form-group">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div class="form-group">
+                <label for="is_admin">
+                    <input type="checkbox" id="is_admin" name="is_admin">
+                    Admin User
+                </label>
+            </div>
+            <div class="form-group">
+                <label for="enabled">
+                    <input type="checkbox" id="enabled" name="enabled" checked>
+                    Enabled (can login)
+                </label>
+            </div>
+            <button type="submit" class="btn">Create User</button>
+            <a href="{{ url_for('admin_users') }}" class="btn cancel-btn">Cancel</a>
+        </form>
+    </div>
+</div>
+{% endblock %}

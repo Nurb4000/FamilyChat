@@ -1,0 +1,115 @@
+<!-- templates/post.html -->
+{% extends "base.html" %}
+{% block title %}{{ post.title }} - Family Chat{% endblock %}
+{% block content %}
+<div class="post-detail">
+    <div class="post-header">
+        <h2>{{ post.title }}</h2>
+        <div class="post-meta">
+            <span>by {{ post.user.username }}</span>
+            <span>at {{ post.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+        </div>
+    </div>
+    <div class="post-content">
+        <p>{{ post.content }}</p>
+        {% if post.image_filename %}
+        <div class="post-image">
+            <img src="{{ url_for('uploaded_file', filename=post.image_filename) }}" alt="Post Image">
+        </div>
+        {% endif %}
+    </div>
+    <div class="post-actions">
+        <a href="{{ url_for('index') }}" class="btn">← Back to Main</a>
+        <a href="{{ url_for('room', room_id=post.room.id) }}" class="btn">← Back to Room</a>
+        {% if session.is_admin %}
+        <a href="{{ url_for('admin_delete_post_confirm', post_id=post.id) }}" class="btn cancel-btn">Delete Post</a>
+        {% endif %}
+    </div>
+    <!-- Pagination controls for Replies -->
+    {% if pagination.total_pages > 1 %}
+    <div class="pagination">
+        <div class="pagination-info">Replies Page {{ pagination.page }} of {{ pagination.total_pages }}</div>
+        <div class="pagination-controls">
+            {% if pagination.has_prev %}
+            <a href="{{ pagination.prev_url }}" class="btn">← Previous</a>
+            {% endif %}
+            {% if pagination.has_next %}
+            <a href="{{ pagination.next_url }}" class="btn">Next →</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+    <div class="reply-section" id="replies-section">
+        <h3>Replies (
+        {% if pagination.total_pages > 1 %}
+        {{ pagination.total_pages }} pages
+        {% else %}
+        {{ replies|length }}
+        {% endif %}
+        )</h3>
+        {% for reply in replies %}
+        <div class="reply" id="reply-{{ reply.id }}">
+            <div class="reply-header">
+                <span class="reply-author">{{ reply.user.username }}</span>
+                <span class="reply-time">{{ reply.created_at.strftime('%Y-%m-%d %H:%M') }}</span>
+                {% if session.is_admin %}
+                <div class="admin-actions">
+                    <a href="{{ url_for('admin_delete_reply_confirm', reply_id=reply.id) }}" class="btn cancel-btn">Delete Reply</a>
+                </div>
+                {% endif %}
+            </div>
+            <div class="reply-content">
+                <p>{{ reply.content }}</p>
+                {% if reply.image_filename %}
+                <div class="reply-image">
+                    <img src="{{ url_for('uploaded_file', filename=reply.image_filename) }}" alt="Reply Image">
+                </div>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="reply-form">
+            <h4>Post a Reply</h4>
+            <form method="POST" action="{{ url_for('create_reply', post_id=post.id) }}" enctype="multipart/form-data">
+                {{ csrf_token() }}
+                <textarea name="content" required placeholder="Enter your reply..."></textarea>
+                <div class="form-group">
+                    <label for="reply_image">Upload Image (Optional):</label>
+                    <input type="file" id="reply_image" name="reply_image" accept="image/*">
+                </div>
+                <button type="submit" class="btn">Submit Reply</button>
+            </form>
+        </div>
+    </div>
+    <!-- Pagination controls for Replies (Bottom) -->
+    {% if pagination.total_pages > 1 %}
+    <div class="pagination">
+        <div class="pagination-info">Page {{ pagination.page }} of {{ pagination.total_pages }}</div>
+        <div class="pagination-controls">
+            {% if pagination.has_prev %}
+            <a href="{{ pagination.prev_url }}" class="btn">← Previous</a>
+            {% endif %}
+            {% if pagination.has_next %}
+            <a href="{{ pagination.next_url }}" class="btn">Next →</a>
+            {% endif %}
+        </div>
+    </div>
+    {% endif %}
+</div>
+{% if oldest_new_reply_id %}
+<script>
+// Scroll to the oldest new reply after page load
+document.addEventListener("DOMContentLoaded", function() {
+    const replyId = {{ oldest_new_reply_id }};
+    const replyElement = document.getElementById('reply-' + replyId);
+    if (replyElement) {
+        replyElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        replyElement.style.backgroundColor = '#4a4a2a';
+        setTimeout(() => {
+            replyElement.style.backgroundColor = '';
+        }, 1000);
+    }
+});
+</script>
+{% endif %}
+{% endblock %}

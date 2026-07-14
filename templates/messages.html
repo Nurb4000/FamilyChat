@@ -1,0 +1,29 @@
+<!-- templates/messages.html -->
+{% extends "base.html" %}
+{% block title %}Private Messages - Family Chat{% endblock %}
+{% block content %}
+<div class="admin-panel">
+    <h2>Private Messages</h2>
+    <a href="{{ url_for('index') }}" class="btn cancel-btn">Back to Main</a>
+    <div class="room-actions" style="margin-bottom: 2rem;">
+        <a href="{{ url_for('send_message_select_user') }}" class="btn">New Message</a>
+    </div>
+    <div class="rooms-grid" style="margin-top: 2rem;">
+        {% for room_info in rooms_with_users %}
+        <div class="room-card">
+            <h3><a href="{{ url_for('message', room_id=room_info.room.id) }}">{{ room_info.other_user.username }}</a></h3>
+            <p>Private Message Room</p>
+            <div class="room-stats">
+                <span>Messages</span>
+                {% if room_info.unread_count > 0 %}
+                <span class="new-posts">({{ room_info.unread_count }} new)</span>
+                {% endif %}
+            </div>
+        </div>
+        {% endfor %}
+        {% if rooms_with_users|length == 0 %}
+        <p style="text-align: center; padding: 1rem; color: #888;">No private message rooms yet</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
