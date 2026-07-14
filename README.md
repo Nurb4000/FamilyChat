@@ -1,6 +1,6 @@
 # Family Chat
 
-A private, family-oriented chat and forum application built with Flask. Perfect for keeping families connected with organized discussions, event planning, and private messaging.
+A private, family-oriented chat and forum application built with Flask. Perfect for keeping families connected with organized discussions, event planning, and private messaging. Without the overhead, secutity risks, and flood of garbage you get with most social media these days.
 
 ## Features
 
