@@ -30,6 +30,7 @@
     <div class="reply-form" style="margin-top: 2rem;">
         <h3>Send Message</h3>
         <form method="POST" action="{{ url_for('send_message', user_id=other_user.id) }}" enctype="multipart/form-data">
+            <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
             <textarea name="content" required placeholder="Enter your message..."></textarea>
             <div class="form-group">
                 <label for="image">Upload Image (Optional):</label>
