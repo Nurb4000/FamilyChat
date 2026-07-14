@@ -5,7 +5,7 @@ A private, family-oriented chat and forum application built with Flask. Perfect 
 ## Features
 
 ### Core Functionality
-- **Organized Rooms**: Create and manage discussion rooms for different topics. Some defaults to get you starte
+- **Organized Rooms**: Create and manage discussion rooms for different topics. Some defaults to get you started
   - Family Events
   - General Discussion
   - News
